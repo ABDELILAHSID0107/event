@@ -1,1 +1,245 @@
-https://github.com/ABDELILAHSID0107/event/releases/download/v1.0/event.apk
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Event</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,600;1,300;1,600&family=Manrope:wght@300;400;500;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --purple: #7148D5;
+      --cream: #F5F0E8;
+      --ink: #111010;
+    }
+
+    html, body {
+      width: 100%; height: 100%;
+      background: var(--ink);
+      font-family: 'Manrope', sans-serif;
+      overflow: hidden;
+    }
+
+    .page {
+      width: 100vw;
+      height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      position: relative;
+    }
+
+    .panel {
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 3rem;
+    }
+
+    .panel-l { background: var(--purple); }
+    .panel-r { background: var(--cream); }
+
+    .bg-num {
+      position: absolute;
+      bottom: -0.18em;
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 600;
+      font-size: 55vh;
+      line-height: 1;
+      letter-spacing: -0.06em;
+      user-select: none;
+      pointer-events: none;
+    }
+    .panel-l .bg-num { left: -0.04em; color: rgba(255,255,255,0.07); }
+    .panel-r .bg-num { right: -0.04em; color: rgba(0,0,0,0.06); }
+
+    .top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      position: relative;
+      z-index: 2;
+    }
+
+    .logo-slot {
+      width: 64px; height: 64px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .logo-slot img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    .audience {
+      font-family: 'Manrope', sans-serif;
+      font-size: 0.6rem;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+    }
+    .panel-l .audience { color: rgba(255,255,255,0.4); }
+    .panel-r .audience { color: rgba(0,0,0,0.35); }
+
+    .bottom {
+      position: relative;
+      z-index: 2;
+    }
+
+    .app-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(3rem, 5.5vw, 5rem);
+      font-weight: 300;
+      line-height: 0.92;
+      letter-spacing: -0.02em;
+      margin-bottom: 1.4rem;
+    }
+    .panel-l .app-title { color: #fff; }
+    .panel-r .app-title { color: var(--ink); }
+
+    .app-title em { font-style: italic; }
+
+    .desc {
+      font-size: 0.78rem;
+      line-height: 1.8;
+      font-weight: 300;
+      max-width: 280px;
+      margin-bottom: 2.2rem;
+    }
+    .panel-l .desc { color: rgba(255,255,255,0.55); }
+    .panel-r .desc { color: rgba(0,0,0,0.45); }
+
+    .btns { display: flex; flex-direction: column; gap: 0.65rem; }
+
+    .dl-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.7rem;
+      padding: 1rem 1.5rem;
+      border-radius: 10px;
+      text-decoration: none;
+      width: fit-content;
+      transition: transform 0.2s ease, opacity 0.2s ease;
+    }
+    .dl-btn:hover { transform: translateY(-3px); opacity: 0.9; }
+    
+    /* Android Icon Styling */
+    .dl-btn svg { width: 22px; height: 22px; flex-shrink: 0; }
+    .dl-btn-label .small { display: block; font-size: 0.6rem; font-weight: 400; opacity: 0.7; text-transform: uppercase; }
+    .dl-btn-label .big { display: block; font-size: 0.9rem; font-weight: 700; }
+
+    /* Theme-specific button colors */
+    .panel-l .dl-main { background: #fff; color: var(--purple); }
+    .panel-r .dl-main { background: var(--ink); color: #fff; }
+
+    .seam {
+      position: absolute;
+      top: 0; bottom: 0;
+      left: 50%;
+      width: 1px;
+      background: linear-gradient(to bottom, transparent, rgba(255,255,255,0.18) 20%, rgba(255,255,255,0.18) 80%, transparent);
+      transform: translateX(-50%);
+      z-index: 10;
+      pointer-events: none;
+    }
+
+    .tagline {
+      position: fixed;
+      bottom: 2rem; left: 50%;
+      transform: translateX(-50%);
+      z-index: 50;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      pointer-events: none;
+    }
+    .tagline-line { height: 1px; width: 48px; background: rgba(255,255,255,0.2); }
+    .tagline-text {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 1rem;
+      color: rgb(0, 0, 0);
+      white-space: nowrap;
+      letter-spacing: 0.04em;
+      font-weight: bold;
+    }
+
+    .page:has(.panel-l:hover) { grid-template-columns: 1.25fr 0.75fr; }
+    .page:has(.panel-r:hover) { grid-template-columns: 0.75fr 1.25fr; }
+    .page { transition: grid-template-columns 0.55s cubic-bezier(0.76,0,0.24,1); }
+
+    @media (max-width: 680px) {
+      html, body { overflow: auto; }
+      .page { grid-template-columns: 1fr; grid-template-rows: 1fr 1fr; height: auto; min-height: 100vh; }
+      .panel { min-height: 100vh; padding: 2.5rem 2rem; }
+      .seam { display: none; }
+      .tagline { position: relative; bottom: auto; left: auto; transform: none; justify-content: center; padding: 1.5rem; background: var(--ink); }
+    }
+  </style>
+</head>
+<body>
+
+<div class="seam"></div>
+
+<div class="page">
+
+  <div class="panel panel-l">
+    <span class="bg-num">E</span>
+
+    <div class="top">
+      <div class="logo-slot">
+        <img src="eventlogo.png" alt="Event Logo">
+      </div>
+      <span class="audience">For planners</span>
+    </div>
+
+    <div class="bottom">
+      <h1 class="app-title"><em>Event</em></h1>
+      <p class="desc">Discover and book caterers, photographers, decorators, and every provider you need to make your event perfect.</p>
+      <div class="btns">
+        <a href="https://github.com/ABDELILAHSID0107/event/releases/download/v1.0/event.apk" class="dl-btn dl-main">
+          <span class="dl-btn-label">
+            <span class="small">Direct Download</span>
+            <span class="big">Download Event</span>
+          </span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel panel-r">
+    <span class="bg-num">B</span>
+
+    <div class="top">
+      <div class="logo-slot">
+        <img src="businesslogo.png" alt="Business Logo">
+      </div>
+      <span class="audience">For providers</span>
+    </div>
+
+    <div class="bottom">
+      <h1 class="app-title">Event<br><em>Business</em></h1>
+      <p class="desc">Post your services, receive client requests, and manage your entire event business from one clean dashboard.</p>
+      <div class="btns">
+        <a href="https://github.com/ABDELILAHSID0107/event/releases/download/v1.0/event_business.apk" class="dl-btn dl-main">
+          <span class="dl-btn-label">
+            <span class="small">Direct Download</span>
+            <span class="big">Download Event Business</span>
+          </span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="tagline">
+  <div class="tagline-line"></div>
+  <span class="tagline-text">From the venue to the menu — we manage everything</span>
+  <div class="tagline-line"></div>
+</div>
+
+</body>
+</html>
